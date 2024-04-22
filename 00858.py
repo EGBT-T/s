@@ -18,7 +18,7 @@ def STOXX_DATA(_RAW):
     return result
 
 config = ConfigParser()
-config.read('C:/Users/jensen.tsai/Desktop/Bloomberg_Code/Refactoring/Product/config.ini')
+config.read('/config.ini')
 
 _ACCOUNT = config['STOXXLOGIN']['ACCOUNT']
 _PASSWORD = config['STOXXLOGIN']['PASSWORD']
@@ -32,12 +32,12 @@ result = requestlib()._requests(
 
 process_data = STOXX_DATA(result.text)
 process_data.to_csv(
-                    'C:/Users/jensen.tsai/Desktop/Bloomberg_Code/Refactoring/Product/test/TODO_name_20240101.csv',
+                    '/TODO_name_20240101.csv',
                     index = False)
 
 # 這塊為了取得資料夾內所有檔案最新日期, 作為日期 ..
 
-# os.chdir('C:/Users/jensen.tsai/Desktop/Bloomberg_Code/Refactoring/Product/test')
+# os.chdir('/test')
 # date = pd.DataFrame(os.listdir(),columns=['檔案名稱'])
 # date1 = date.loc[date['檔案名稱'].str.contains(".csv")]
 # date1 = date1.loc[date1['檔案名稱'].str.contains('TODO_name')]
@@ -46,7 +46,7 @@ process_data.to_csv(
 # date3 = date2.sort_values('檔案名稱',ascending=False).reset_index(drop=True)
 # data_new = date3.iloc[0,0]
 
-ConsData = pd.read_csv('C:/Users/jensen.tsai/Desktop/Bloomberg_Code/Refactoring/Product/test/TODO_name_20240101.csv')
+ConsData = pd.read_csv('/TODO_name_20240101.csv')
 ConsCol = ConsData.columns[0].split(';')
 ConsDataMerg = []
 ConsDataMerg = pd.DataFrame(ConsDataMerg)
@@ -73,18 +73,10 @@ result = requestlib()._requests(
 
 # TODO: STOXX_DATA() get Date / Indexvalue
 
-# https://www.stoxx.com/documents/stoxxnet/Documents/Indices/Current/HistoricalData/h_sx50ugv.txt'
 
-# with open('C:/Users/jensen.tsai/Desktop/Bloomberg_Code/Refactoring/Product/test/open_sx50ul_' + var + '.csv', 'wb') as f:
+# with open('/open_sx50ul_' + var + '.csv', 'wb') as f:
 #     f.write(result.text)
     
-
-# # 帳號 alvin.wang@sinopac.com 密碼 Alvinwang0917
-# # 帳號 anthony.hui@sinopac.com 密碼 AA220875$9as
-# driver.find_element_by_name("_58_login").send_keys('emma.wang@sinopac.com')
-# time.sleep(1)
-# driver.find_element_by_name("_58_password").send_keys('STOXXji3g4go6!')
-# time.sleep(3)
 
 # # 點擊登入
 # driver.find_element_by_xpath("//input[@id='user-login']").click()
@@ -192,8 +184,8 @@ result = requestlib()._requests(
 #     # 重新命名檔案名稱
 #     os.rename(src = 'opencomposition_sx50ul.csv', dst = 'open_sx50ul_'+text2+'.csv')
 # except:
-#     os.chdir("C:/Users/anthony.hui/Downloads")
+#     os.chdir("/Downloads")
 #     # 重新命名檔案名稱
 #     os.rename(src = 'opencomposition_sx50ul.csv', dst = 'open_sx50ul_'+text2+'.csv')
 # # 移動檔案至指定位置
-# shutil.move('open_sx50ul_'+text2+'.csv',target)
+# shutil.move('_'+text2+'.csv',target)
