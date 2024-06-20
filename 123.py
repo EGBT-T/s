@@ -1,3 +1,12 @@
-import pandas as pd
+from io import StringIO
+import requests
 
-print('123')
+response = requests.get(
+                        'https://',
+                        auth=('',''))
+
+_data = response.text.replace(';', ',')
+_data = StringIO(_data[:])
+_data = pd.read_csv(_data)
+
+_data
