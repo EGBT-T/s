@@ -1,0 +1,39 @@
+import pandas as pd
+from sqlalchemy import create_engine, text
+
+
+engine = create_engine('mssql+pyodbc://username:password@dsn_name')
+
+data = {
+    "id": [1, 2, 3],
+    "name": ["John Doe", "Jane Smith", "Alice Johnson"],
+    "age": [30, 25, 22]
+}
+df = pd.DataFrame(data)
+ 
+create_temp_table = text("""
+CREATE TABLE #TempUsers (
+    id INT PRIMARY KEY,
+    name NVARCHAR(100),
+    age INT
+);
+""")
+
+merge_stmt = text("""
+MERGE INTO users AS target
+USING #TempUsers AS source
+ON (target.id = source.id)
+WHEN MATCHED THEN 
+    UPDATE SET name = source.name, age = source.age
+WHEN NOT MATCHED THEN
+    INSERT (id, name, age) VALUES (source.id, source.name, source.age);
+""")
+
+with engine.connect() as connection:
+    connection.execute(create_temp_table)
+    
+    df.to_sql('#TempUsers', con=connection, if_exists='append', index=False)
+    
+    connection.execute(merge_stmt)
+    
+    connection.execute("DROP TABLE #TempUsers")
